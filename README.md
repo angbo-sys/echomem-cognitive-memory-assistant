@@ -185,18 +185,3 @@ EchoMem 当前已经具备完整原型能力，但仍然是课程设计阶段作
 - **记忆质量仍需长期评估**：当前测试能验证记忆链路可用，但用户长期使用后的记忆冲突、遗忘策略、噪声累积和个性化质量仍需要更多真实数据验证。
 - **安全与隐私需要产品化增强**：项目已避免提交 `.env` 和数据库，但正式产品还需要更完善的密钥管理、用户数据脱敏、权限控制和数据清除机制。
 
-## 仓库命名建议
-
-推荐：
-
-```text
-echomem-cognitive-memory-assistant
-```
-
-备选：
-
-```text
-echomem
-echomem-learning-memory-agent
-echomem-ai-study-assistant
-```
