@@ -160,6 +160,8 @@ def build_memory_search_from_config(cfg: AppConfig) -> MemorySearch:
         cognee_api_key=cfg.memory_frameworks.cognee_api_key,
         cognee_base_url=cfg.memory_frameworks.cognee_base_url,
         cognee_dataset_name=cfg.memory_frameworks.cognee_dataset_name,
+        cognee_node_set=cfg.memory_frameworks.cognee_node_set,
+        cognee_search_type=cfg.memory_frameworks.cognee_search_type,
         analysis_provider=cfg.memory_analysis.provider,
         analysis_model=cfg.memory_analysis.model,
         analysis_api_key=cfg.memory_analysis.api_key,

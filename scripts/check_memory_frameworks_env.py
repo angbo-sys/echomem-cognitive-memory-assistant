@@ -118,6 +118,8 @@ def main() -> int:
                     "cloud_api_key_masked": _mask(cfg.memory_frameworks.cognee_api_key),
                     "cloud_base_url": cfg.memory_frameworks.cognee_base_url,
                     "dataset_name": cfg.memory_frameworks.cognee_dataset_name,
+                    "node_set": cfg.memory_frameworks.cognee_node_set,
+                    "search_type": cfg.memory_frameworks.cognee_search_type,
                     "cloud_ready": bool(
                         cfg.memory_frameworks.enable_cognee
                         and cfg.memory_frameworks.cognee_cloud_mode

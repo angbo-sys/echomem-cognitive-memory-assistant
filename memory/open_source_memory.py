@@ -670,18 +670,43 @@ class LlamaIndexMemoryAdapter:
 class CogneeCloudAdapter:
     """Cognee Cloud: cloud-hosted knowledge graph service."""
 
-    def __init__(self, api_key: str = "", base_url: str = "", dataset_name: str = "echomem") -> None:
+    def __init__(
+        self,
+        api_key: str = "",
+        base_url: str = "",
+        dataset_name: str = "echomem",
+        node_set: str | Iterable[str] = "",
+        search_type: str = "GRAPH_COMPLETION",
+    ) -> None:
         self.available = False
         self._api_key = api_key
         self._base_url = base_url.rstrip("/") if base_url else ""
         self._dataset_name = dataset_name.strip() or "echomem"
+        self._node_set = self._normalize_node_set(node_set)
+        self._search_type = (search_type or "GRAPH_COMPLETION").strip().upper()
         self._headers = {"X-Api-Key": api_key, "Content-Type": "application/json"} if api_key else {}
         self.api_call_count = 0
         self.last_error = ""
         if api_key and base_url:
             self.available = True
 
-    def _request(self, method: str, path: str, **kwargs: Any) -> Optional[dict]:
+    @staticmethod
+    def _normalize_node_set(node_set: str | Iterable[str]) -> List[str]:
+        if isinstance(node_set, str):
+            raw_items = node_set.split(",")
+        else:
+            raw_items = list(node_set)
+        normalized: List[str] = []
+        seen: set[str] = set()
+        for item in raw_items:
+            value = str(item).strip()
+            if not value or value in seen:
+                continue
+            seen.add(value)
+            normalized.append(value)
+        return normalized
+
+    def _request(self, method: str, path: str, **kwargs: Any) -> Optional[Any]:
         """Send an API request to Cognee Cloud."""
         import urllib.request
         import urllib.error
@@ -711,10 +736,16 @@ class CogneeCloudAdapter:
         clean_texts = [str(text).strip() for text in texts[:10] if str(text).strip()]
         if not clean_texts:
             return False
+        add_payload: Dict[str, Any] = {
+            "textData": clean_texts,
+            "datasetName": self._dataset_name,
+        }
+        if self._node_set:
+            add_payload["nodeSet"] = self._node_set
         added = self._request(
             "POST",
             "/api/v1/add_text",
-            json={"textData": clean_texts, "datasetName": self._dataset_name},
+            json=add_payload,
         )
         if added is None:
             return False
@@ -729,15 +760,19 @@ class CogneeCloudAdapter:
         """Search the cloud knowledge graph."""
         if not self.available:
             return []
+        search_payload: Dict[str, Any] = {
+            "searchType": self._search_type,
+            "query": query,
+            "datasets": [self._dataset_name],
+            "topK": limit,
+            "onlyContext": True,
+        }
+        if self._node_set:
+            search_payload["nodeName"] = self._node_set
         result = self._request(
             "POST",
             "/api/v1/search",
-            json={
-                "query": query,
-                "datasets": [self._dataset_name],
-                "topK": limit,
-                "onlyContext": True,
-            },
+            json=search_payload,
         )
         if result is None:
             return []
@@ -747,10 +782,25 @@ class CogneeCloudAdapter:
             items = result
         else:
             return []
-        return [
-            str(item.get("search_result", item.get("text", item))) if isinstance(item, dict) else str(item)
-            for item in items
-        ][:limit]
+        signals: List[str] = []
+        for item in items:
+            text = self._extract_search_text(item)
+            if text:
+                signals.append(text)
+            if len(signals) >= limit:
+                break
+        return signals
+
+    @classmethod
+    def _extract_search_text(cls, item: Any) -> str:
+        if isinstance(item, dict):
+            value = item.get("search_result", item.get("text", item.get("context", "")))
+            if isinstance(value, (dict, list)):
+                return _humanize_signal(json.dumps(value, ensure_ascii=False))
+            return _humanize_signal(value)
+        if isinstance(item, (list, tuple)):
+            return _humanize_signal(" ".join(cls._extract_search_text(part) for part in item))
+        return _humanize_signal(item)
 
 
 # ---------------------------------------------------------------------------
@@ -1121,6 +1171,8 @@ class OpenSourceMemoryHub:
         cognee_api_key: str = "",
         cognee_base_url: str = "",
         cognee_dataset_name: str = "echomem",
+        cognee_node_set: str = "",
+        cognee_search_type: str = "GRAPH_COMPLETION",
         analysis_provider: str = "mimo",
         analysis_model: str = "mimo-v2.5-pro",
         analysis_api_key: str = "",
@@ -1150,6 +1202,8 @@ class OpenSourceMemoryHub:
             api_key=cognee_api_key,
             base_url=cognee_base_url,
             dataset_name=cognee_dataset_name,
+            node_set=cognee_node_set,
+            search_type=cognee_search_type,
         ) if cognee_cloud_mode else None
         self.cognee = CogneeAdapter(
             cloud_adapter=cognee_cloud,

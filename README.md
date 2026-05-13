@@ -24,7 +24,7 @@ EchoMem 是一个面向学习场景的认知记忆助手。它不只是回答当
 
 当前已验证基线：
 
-- 单元测试：`107 tests / 107 pass`
+- 单元测试：`108 tests / 108 pass`
 - 交付工作流：Compile / Unit Tests / Baseline Eval 全部通过
 - 云端记忆框架：Mem0 Cloud、LlamaCloud、Cognee Cloud 已集成
 - API 配置：统一通过 `config.load_config()` 管理

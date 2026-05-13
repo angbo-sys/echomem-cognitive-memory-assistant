@@ -81,6 +81,8 @@ class MemoryFrameworkConfig:
     cognee_api_key: str = ""
     cognee_base_url: str = ""
     cognee_dataset_name: str = "echomem"
+    cognee_node_set: str = ""
+    cognee_search_type: str = "GRAPH_COMPLETION"
 
 
 @dataclass(frozen=True)
@@ -233,6 +235,10 @@ def load_config(
         cognee_api_key=str(_get("COGNEE_API_KEY", memory_raw.get("cognee_api_key", ""))),
         cognee_base_url=str(_get("COGNEE_BASE_URL", memory_raw.get("cognee_base_url", ""))),
         cognee_dataset_name=str(_get("COGNEE_DATASET_NAME", memory_raw.get("cognee_dataset_name", "echomem"))),
+        cognee_node_set=str(_get("COGNEE_NODE_SET", memory_raw.get("cognee_node_set", ""))),
+        cognee_search_type=str(
+            _get("COGNEE_SEARCH_TYPE", memory_raw.get("cognee_search_type", "GRAPH_COMPLETION"))
+        ),
     )
     memory_analysis_provider = str(
         _get("MEMORY_ANALYSIS_PROVIDER", memory_analysis_raw.get("provider", "mimo"))

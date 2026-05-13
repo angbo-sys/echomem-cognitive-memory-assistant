@@ -51,3 +51,5 @@ llamaindex_cloud_mode = true  # true=优先云端(LlamaCloud/LlamaParse), false=
 
 # Cognee 配置
 cognee_cloud_mode = true  # true=云端(Cognee Cloud API), false=本地(SQLite+LanceDB)
+cognee_node_set = ""
+cognee_search_type = "GRAPH_COMPLETION"

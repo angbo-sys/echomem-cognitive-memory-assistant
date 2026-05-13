@@ -197,14 +197,24 @@ class TestCogneeCloudAdapter(unittest.TestCase):
                     return [{"search_result": "graph context"}]
                 return {"ok": True}
 
-        adapter = FakeCloud(api_key="test-key", base_url="https://example.com", dataset_name="unit_ds")
+        adapter = FakeCloud(
+            api_key="test-key",
+            base_url="https://example.com",
+            dataset_name="unit_ds",
+            node_set="user:u1,course:cip",
+            search_type="CHUNKS",
+        )
 
         self.assertTrue(adapter.add_knowledge(["alpha", "beta"]))
         self.assertEqual(adapter.search_graph("alpha"), ["graph context"])
         self.assertEqual(calls[0], (
             "POST",
             "/api/v1/add_text",
-            {"textData": ["alpha", "beta"], "datasetName": "unit_ds"},
+            {
+                "textData": ["alpha", "beta"],
+                "datasetName": "unit_ds",
+                "nodeSet": ["user:u1", "course:cip"],
+            },
         ))
         self.assertEqual(calls[1], (
             "POST",
@@ -214,8 +224,20 @@ class TestCogneeCloudAdapter(unittest.TestCase):
         self.assertEqual(calls[2], (
             "POST",
             "/api/v1/search",
-            {"query": "alpha", "datasets": ["unit_ds"], "topK": 5, "onlyContext": True},
+            {
+                "searchType": "CHUNKS",
+                "query": "alpha",
+                "datasets": ["unit_ds"],
+                "topK": 5,
+                "onlyContext": True,
+                "nodeName": ["user:u1", "course:cip"],
+            },
         ))
+
+    def test_cloud_adapter_extracts_nested_search_text(self) -> None:
+        adapter = CogneeCloudAdapter(api_key="test-key", base_url="https://example.com")
+        self.assertEqual(adapter._extract_search_text({"search_result": {"node": "贝叶斯"}}), '{"node": "贝叶斯"}')
+        self.assertEqual(adapter._extract_search_text({"text": "条件概率"}), "条件概率")
 
 
 class TestLlamaIndexMemoryAdapterEnhanced(unittest.TestCase):

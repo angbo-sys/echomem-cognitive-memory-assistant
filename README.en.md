@@ -25,7 +25,7 @@ Unlike a normal one-off chatbot, EchoMem combines conversation, short-term memor
 
 Current verified baseline:
 
-- Unit tests: `107 tests / 107 pass`
+- Unit tests: `108 tests / 108 pass`
 - Delivery workflow: Compile / Unit Tests / Baseline Eval passed
 - Memory framework cloud path: Mem0 Cloud, LlamaCloud, and Cognee Cloud are integrated
 - API configuration: centralized through `config.load_config()`
