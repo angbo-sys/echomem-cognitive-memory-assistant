@@ -174,12 +174,17 @@ Useful documents:
 - `docs/开源记忆框架接入说明.md`: memory framework integration notes
 - `docs/mimo_api接入说明.md`: MiMo and unified API configuration notes
 
-## Current Limitations
+## Weaknesses And Limitations
 
-- LLM responses are still returned as full text, not token-by-token streaming.
-- UI visual regression is not yet automated with screenshots.
-- The orchestrator is still relatively centralized and can be split into clearer pipeline stages.
-- Some product parameters, such as UI sizing and prompt weighting, can be further centralized.
+EchoMem is currently a course design prototype. It works as an end-to-end demo, but it is not a finished product yet.
+
+- **No streaming response yet**: LLM output is still returned as full text, so long answers require waiting for the full generation.
+- **Limited UI regression testing**: The UI has component tests and manual checks, but it does not yet have automated desktop/mobile screenshot regression.
+- **Centralized orchestration**: The `Orchestrator` still owns many workflow responsibilities and can be split into clearer pipeline stages.
+- **Configuration can be refined further**: API settings are centralized, but UI sizing, prompt weights, and budget thresholds can be managed more cleanly.
+- **External cloud dependency**: Mem0, LlamaCloud, Cognee Cloud, MiMo, and DeepSeek require valid API keys and network access. Offline demos are therefore limited.
+- **Long-term memory quality needs more evidence**: Current tests verify that the memory pipeline works, but long-term conflicts, forgetting, noise accumulation, and personalization quality need more real usage data.
+- **Security and privacy are not product-grade yet**: `.env` and local databases are ignored by Git, but a production system would need stronger secret management, data anonymization, access control, and user data deletion flows.
 
 ## Suggested Repository Name
 
