@@ -2,7 +2,6 @@
 
 [English README](README.en.md)
 
-推荐仓库名：`echomem-cognitive-memory-assistant`
 
 EchoMem 是一个面向学习场景的认知记忆助手。它不只是回答当前这一句话，而是会结合用户的长期目标、讲解偏好、薄弱知识点、情绪状态、历史对话和知识背景，生成更贴近个人状态的回答。
 
