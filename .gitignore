@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.env
+memory.db
+profile/profile.db
+*.db
+**/__pycache__/
+.DS_Store
+*.log
+.context/
+chroma_db/
+.mem0_faiss/
+.deps/
+node_modules/
+.claude/
+.codex/
+.deepseek/

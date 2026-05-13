@@ -1,0 +1,53 @@
+[llm]
+provider = "mimo"
+model = "mimo-v2.5-pro"
+timeout = 30.0
+temperature = 1.0
+top_p = 0.95
+
+[mimo]
+api_key = ""
+base_url = ""
+use_api_key_header = false
+
+[deepseek]
+api_key = ""
+base_url = ""
+model = "deepseek-v4-flash"
+
+[openai]
+api_key = ""
+base_url = ""
+
+[qwen]
+api_key = ""
+base_url = ""
+
+[ollama]
+base_url = ""
+
+[memory_analysis]
+# 可选：mimo / deepseek
+# API key 和 base_url 统一从 .env / 环境变量读取；这里仅保留非敏感默认项
+provider = "deepseek"
+model = "deepseek-v4-flash"
+base_url = ""
+timeout = 20.0
+
+[retrieval]
+backend = "chroma"
+candidate_k = 30
+top_k = 5
+decay_lambda = 0.05
+
+[memory_frameworks]
+enable_mem0 = true
+enable_llamaindex_memory = true
+enable_cognee = true
+
+# LlamaIndex 配置
+llamaindex_token_limit = 30000
+llamaindex_cloud_mode = true  # true=优先云端(LlamaCloud/LlamaParse), false=本地(Memory Buffer)
+
+# Cognee 配置
+cognee_cloud_mode = true  # true=云端(Cognee Cloud API), false=本地(SQLite+LanceDB)
