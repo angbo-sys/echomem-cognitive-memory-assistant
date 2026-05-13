@@ -4,6 +4,8 @@
 
 Recommended repository name: `echomem-cognitive-memory-assistant`
 
+This project was built as a course design project for a Chinese Information Processing course. It focuses on Chinese learning conversations, Chinese memory retrieval, evolving user profiles, and explainable memory framework integration.
+
 EchoMem is a cognitive memory assistant for learning scenarios. It is designed to remember a learner over time, track changing goals and weak points, and show how memory is used inside the answer process.
 
 Unlike a normal one-off chatbot, EchoMem combines conversation, short-term memory, long-term memory, user profiling, emotion recognition, memory retrieval, and a visual observation dashboard.
