@@ -16,14 +16,6 @@ if errorlevel 1 (
     exit /b 1
 )
 
-python scripts\secret_scan.py --strict
-if errorlevel 1 (
-    echo.
-    echo [ERROR] Secret scan failed. Stop building.
-    pause
-    exit /b 1
-)
-
 set "PAYLOAD_FLAGS="
 if "%ECHOMEM_EMBED_ENV%"=="1" (
     set "PAYLOAD_FLAGS=--include-env"
@@ -31,6 +23,17 @@ if "%ECHOMEM_EMBED_ENV%"=="1" (
     echo [WARN] The .env file will be embedded into EchoMem.exe for private local testing.
     echo [WARN] Do not upload, share, or commit the generated exe.
     echo.
+) else (
+    python scripts\secret_scan.py --strict
+    if errorlevel 1 (
+        echo.
+        echo [ERROR] Secret scan failed. Stop building.
+        echo [INFO] If this is a private local build that intentionally embeds .env, run:
+        echo [INFO] PowerShell: $env:ECHOMEM_EMBED_ENV = "1"
+        echo [INFO] CMD: set ECHOMEM_EMBED_ENV=1
+        pause
+        exit /b 1
+    )
 )
 
 if exist "requirements-windows.txt" (
