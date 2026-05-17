@@ -12,6 +12,10 @@ chroma_db/
 .mem0_faiss/
 .deps/
 node_modules/
+.build/
+build/
+dist/
+*.spec
 .claude/
 .codex/
 .deepseek/

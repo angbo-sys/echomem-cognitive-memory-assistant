@@ -128,6 +128,23 @@ set ECHOMEM_PORT=8501
 start_ui_windows.bat
 ```
 
+Build a Windows one-click exe:
+
+```bat
+scripts\build_windows_exe.bat
+```
+
+After the build finishes, the entry point is `dist\EchoMem\EchoMem.exe`. Real `.env` secrets are not embedded into the exe. For local personal use, place `.env` at `dist\EchoMem\.env`; the exe will read it automatically. Do not upload or share a `dist` folder that contains real keys.
+
+For personal local use only, you can ask the build script to copy `.env` next to the exe:
+
+```bat
+set ECHOMEM_COPY_ENV=1
+scripts\build_windows_exe.bat
+```
+
+This still does not write secrets into the exe itself; it only places `.env` at `dist\EchoMem\.env`.
+
 Start the Streamlit UI:
 
 ```bash

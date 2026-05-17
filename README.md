@@ -127,6 +127,23 @@ set ECHOMEM_PORT=8501
 start_ui_windows.bat
 ```
 
+构建 Windows 一键启动 exe：
+
+```bat
+scripts\build_windows_exe.bat
+```
+
+构建完成后，入口文件位于 `dist\EchoMem\EchoMem.exe`。为了避免密钥泄漏，真实 `.env` 不会被打进 exe；如果只是给自己电脑使用，可以把 `.env` 放到 `dist\EchoMem\.env`，exe 会自动读取。不要把带真实 `.env` 的 `dist` 文件夹上传到 GitHub 或发给别人。
+
+如果确实只在自己电脑上使用，并希望构建后自动把 `.env` 复制到 exe 同目录，可以这样运行：
+
+```bat
+set ECHOMEM_COPY_ENV=1
+scripts\build_windows_exe.bat
+```
+
+这仍然不会把密钥写入 exe 内部，只会把 `.env` 放到 `dist\EchoMem\.env`。
+
 启动 Streamlit UI：
 
 ```bash
