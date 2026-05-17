@@ -111,6 +111,22 @@ conda run -n echomem-test python scripts/secret_scan.py --strict
 
 项目当前在本地 Conda 环境 `echomem-test` 中验证。
 
+Windows 一键启动 UI：
+
+```bat
+start_ui_windows.bat
+```
+
+也可以直接双击项目根目录下的 `start_ui_windows.bat`。脚本默认使用 Conda 环境 `echomem-test`，默认端口为 `8501`；如果 Windows 没有把 Conda 加入 PATH，请先打开 Anaconda Prompt，再进入项目目录运行该脚本。
+
+如需临时修改环境名或端口：
+
+```bat
+set ECHOMEM_ENV=echomem-test
+set ECHOMEM_PORT=8501
+start_ui_windows.bat
+```
+
 启动 Streamlit UI：
 
 ```bash
@@ -184,4 +200,3 @@ EchoMem 当前已经具备完整原型能力，但仍然是课程设计阶段作
 - **依赖外部云服务**：Mem0、LlamaCloud、Cognee Cloud、MiMo、DeepSeek 等云端能力需要有效 API Key 和网络环境，离线演示时效果会受限。
 - **记忆质量仍需长期评估**：当前测试能验证记忆链路可用，但用户长期使用后的记忆冲突、遗忘策略、噪声累积和个性化质量仍需要更多真实数据验证。
 - **安全与隐私需要产品化增强**：项目已避免提交 `.env` 和数据库，但正式产品还需要更完善的密钥管理、用户数据脱敏、权限控制和数据清除机制。
-

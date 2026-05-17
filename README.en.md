@@ -112,6 +112,22 @@ If any real key has ever been pasted into a chat, issue, screenshot, or public p
 
 The project has been verified in the local Conda environment `echomem-test`.
 
+Start the UI on Windows:
+
+```bat
+start_ui_windows.bat
+```
+
+You can also double-click `start_ui_windows.bat` in the project root. The script uses the Conda environment `echomem-test` and port `8501` by default. If Conda is not available in PATH, open Anaconda Prompt, enter the project folder, and run the script there.
+
+To temporarily change the environment name or port:
+
+```bat
+set ECHOMEM_ENV=echomem-test
+set ECHOMEM_PORT=8501
+start_ui_windows.bat
+```
+
 Start the Streamlit UI:
 
 ```bash
