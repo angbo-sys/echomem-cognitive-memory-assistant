@@ -16,6 +16,12 @@ if errorlevel 1 (
     exit /b 1
 )
 
+echo Python version:
+python --version
+echo Pip version:
+python -m pip --version
+echo.
+
 set "PAYLOAD_FLAGS="
 if "%ECHOMEM_EMBED_ENV%"=="1" (
     set "PAYLOAD_FLAGS=--include-env"
@@ -38,9 +44,20 @@ if "%ECHOMEM_EMBED_ENV%"=="1" (
 
 if exist "requirements-windows.txt" (
     echo Installing Windows build/runtime dependencies...
-    python -m pip install -r requirements-windows.txt
+    python -m pip install --upgrade pip setuptools wheel
+    if errorlevel 1 (
+        echo [WARN] Failed to upgrade pip tooling. Continuing with current pip.
+    )
+    python -m pip install -r requirements-windows.txt --log build_dependency_install.log
     if errorlevel 1 (
         echo [ERROR] Failed to install dependencies from requirements-windows.txt.
+        echo [ERROR] See build_dependency_install.log for the detailed pip error.
+        echo.
+        echo Common fixes:
+        echo 1. Use Python 3.10 or 3.11 on Windows.
+        echo 2. Check network/proxy access to PyPI.
+        echo 3. Try a mirror:
+        echo    python -m pip install -r requirements-windows.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
         pause
         exit /b 1
     )
