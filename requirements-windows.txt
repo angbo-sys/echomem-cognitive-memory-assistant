@@ -1,0 +1,8 @@
+streamlit
+pandas
+chromadb
+mem0ai
+llama-cloud
+llama-index-core
+cognee
+pyinstaller

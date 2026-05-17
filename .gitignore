@@ -16,6 +16,7 @@ node_modules/
 build/
 dist/
 *.spec
+EchoMem_windows_private_*.zip
 .claude/
 .codex/
 .deepseek/

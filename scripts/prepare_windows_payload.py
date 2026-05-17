@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import shutil
 from pathlib import Path
 
@@ -57,6 +58,14 @@ def _ignore(_: str, names: list[str]) -> set[str]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Prepare the files embedded in the Windows exe.")
+    parser.add_argument(
+        "--include-env",
+        action="store_true",
+        help="Include .env in the payload. Use only for private local testing.",
+    )
+    args = parser.parse_args()
+
     if PAYLOAD_ROOT.exists():
         shutil.rmtree(PAYLOAD_ROOT)
     PAYLOAD_ROOT.mkdir(parents=True, exist_ok=True)
@@ -72,8 +81,19 @@ def main() -> int:
         if src.exists():
             shutil.copy2(src, PAYLOAD_ROOT / filename)
 
+    if args.include_env:
+        env_file = ROOT / ".env"
+        if env_file.exists():
+            shutil.copy2(env_file, PAYLOAD_ROOT / ".env")
+            print("[WARN] Included .env in the Windows payload for private local testing.")
+        else:
+            print("[WARN] --include-env was set, but .env was not found.")
+
     print(f"Prepared Windows payload: {PAYLOAD_ROOT}")
-    print("Excluded local secrets, databases, caches, vector stores, and logs.")
+    if args.include_env:
+        print("Excluded databases, caches, vector stores, and logs. .env was included by request.")
+    else:
+        print("Excluded local secrets, databases, caches, vector stores, and logs.")
     return 0
 
 

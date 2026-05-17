@@ -144,6 +144,15 @@ scripts\build_windows_exe.bat
 
 这仍然不会把密钥写入 exe 内部，只会把 `.env` 放到 `dist\EchoMem\.env`。
 
+如果只是课堂演示或临时上机测试，并且你确认不会传播生成物，可以临时把 `.env` 打进 exe 的 payload：
+
+```bat
+set ECHOMEM_EMBED_ENV=1
+scripts\build_windows_exe.bat
+```
+
+这种 exe 含真实密钥，不要上传、不要发给别人、测试完建议删除。
+
 启动 Streamlit UI：
 
 ```bash

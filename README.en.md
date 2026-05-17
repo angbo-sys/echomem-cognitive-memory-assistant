@@ -145,6 +145,15 @@ scripts\build_windows_exe.bat
 
 This still does not write secrets into the exe itself; it only places `.env` at `dist\EchoMem\.env`.
 
+For a temporary classroom demo or private machine test, you can embed `.env` into the exe payload:
+
+```bat
+set ECHOMEM_EMBED_ENV=1
+scripts\build_windows_exe.bat
+```
+
+That exe contains real secrets. Do not upload it, do not share it, and delete it after testing.
+
 Start the Streamlit UI:
 
 ```bash
